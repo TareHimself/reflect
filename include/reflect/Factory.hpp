@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include <memory>
 #include <unordered_map>
-
 #include "wrap/Reflected.hpp"
 
 namespace reflect::factory

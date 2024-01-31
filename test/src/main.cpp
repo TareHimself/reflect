@@ -43,15 +43,28 @@ int main(int argc, char** argv)
     for(const auto reflected : reflect::factory::values())
     {
         std::cout << "Reflected Type " << reflected->GetName() << std::endl;
-        for(const auto &field : reflected->GetFields())
+        for(const auto &[_,field] : reflected->GetFields())
         {
             std::cout << "\tField: " << field->GetName() << " \n\t\tType: " << (field->GetType() == EFieldType::FieldType_Function ? "Function" : "Property") << std::endl;
         }
 
         std::cout << "\n\n";
     }
+
+    if(const auto reflected = reflect::factory::find("TestStruct"))
+    {
+        TestStruct instance;
+        const auto targetProp = reflected->GetProperty("num2");
+
+        std::cout << "Reflected Value " << *targetProp->Get(instance).As<int>() << std::endl;
+        auto v = 1738;
+        targetProp->Set(instance,1738);
+        std::cout << "Reflected Value " << *targetProp->Get(instance).As<int>() << std::endl;
+        const auto targetFunc = reflected->GetFunction("TestFunc2");
+        targetFunc->Call({},instance,std::string("HELLO REFLECTED WORLD"));
+    }
     reflect::parser::Parser parser;
-    parser.files.emplace_back(R"(D:\Github\reflect\Test.hpp)");
+    parser.files.emplace_back(R"(D:\Github\reflect\test\src\Test.hpp)");
     const auto parsedFiles = parser.Parse();
     for (auto& f : parsedFiles)
     {

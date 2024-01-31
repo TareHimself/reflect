@@ -7,20 +7,20 @@ namespace reflect::wrap
     {
         bool _isValid = false;
         Type _type;
-        void * _data = nullptr;
+        void* _data = nullptr;
+
     public:
+        Value(const Type& type, void* data);
 
-        Value(const Type& type,void * data);
+        template <typename T>
+        Value(T* data);
+
 
         template <typename T>
-        Value(T * data);
-        
-        
+        T* As() const;
+
         template <typename T>
-        T * As() const;
-        
-        template <typename T>
-        T * As();
+        T* As();
 
         Value();
 
@@ -28,19 +28,19 @@ namespace reflect::wrap
     };
 
     template <typename T>
-    Value::Value(T * data) : Value(Type::Infer<T>(),data)
+    Value::Value(T* data) : Value(Type::Infer<T>(), data)
     {
     }
 
     template <typename T>
-    T * Value::As() const
+    T* Value::As() const
     {
-        return static_cast<T *>(_data);
+        return static_cast<T*>(_data);
     }
 
     template <typename T>
-    T * Value::As()
+    T* Value::As()
     {
-        return static_cast<T *>(_data);
+        return static_cast<T*>(_data);
     }
 }

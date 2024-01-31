@@ -1,4 +1,4 @@
-#include "Property.hpp"
+#include "reflect/wrap/Property.hpp"
 
 namespace reflect::wrap
 {
@@ -10,5 +10,4 @@ namespace reflect::wrap
         _getter = getter;
         _setter = setter;
     }
-    
 }

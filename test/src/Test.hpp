@@ -32,10 +32,11 @@ public:
 
 REFLECT_IMPLEMENT(TestClass)
 
-RCLASS()
-class TestStruct
+RSTRUCT()
+struct TestStruct
 {
 public:
+    
     RPROPERTY()
     int num = 0;
 
@@ -46,17 +47,16 @@ public:
     int* num5 = nullptr;
 
     RFUNCTION()
-
-    void TestFunc()
+    void Foo()
     {
-        std::cout << "YO FROM TEST FUNC" << std::endl;
+        std::cout << "CALLED FOO" << std::endl;
     }
 
     RFUNCTION()
 
     void TestFunc2(const std::string& data)
     {
-        std::cout << "YO FROM TEST FUNC: " << data << std::endl;
+        std::cout << "FROM TEST FUNC: " << data << std::endl;
     }
 
     RFUNCTION()
@@ -82,10 +82,10 @@ struct TestClassNotReflected
 
     void TestFunc2(const std::string& data)
     {
-        std::cout << "YO FROM TEST FUNC: " << data << std::endl;
+        std::cout << "FROM TEST FUNC: " << data << std::endl;
     }
 
-    int TestFunc3(int a,int b,int c)
+    int TestFunc3(const int a, const int b, const int c)
     {
         return a + b + c;
     }

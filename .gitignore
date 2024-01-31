@@ -2,3 +2,5 @@ build/*
 */build/*
 ThirdParty/*
 shaders/**/compiled/*
+test/reflect
+standalone/reflect

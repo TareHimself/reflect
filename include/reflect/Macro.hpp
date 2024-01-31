@@ -4,30 +4,30 @@ namespace reflect
 {
 #ifndef REFLECT_MACROS
 #define REFLECT_MACROS
-#ifndef RCLASS
-#define RCLASS(...)
-#endif
 
-#ifndef RIMPLEMENT
-#define RIMPLEMENT() __FILE__ __LINE__
-#endif
-
-#ifndef RPROPERTY
-#define RPROPERTY(...)
-#endif
-
-
-#ifndef RFUNCTION
-#define RFUNCTION(...)
-#endif
-
-#ifndef REFLECT_CONCAT_IMPL
 #define REFLECT_CONCAT_IMPL(x, y) x##y
-#endif
 
-#ifndef REFLECT_CONCAT
 #define REFLECT_CONCAT(x, y) REFLECT_CONCAT_IMPL(x, y)
-#endif
+
+// Marks the class below it for reflection
+#define RCLASS(...)
+
+// Marks the struct below it for reflection
+#define RSTRUCT(...)
+
+// Marks the enum below it for reflection
+#define RENUM(...)
+
+// Marks the variable below it for reflection
+#define RPROPERTY(...)
+    
+// Marks the function below it for reflection
+#define RFUNCTION(...)
+
+// Marks the constructor below it for reflection
+#define RCONSTRUCTOR(...)
+
+#define REFLECTED_BODY() REFLECT_CONCAT(REFLECTED_,REFLECT_CONCAT(__FILE__,__LINE__))
 
 #define REFLECT_WRAP_PROPERTY(Owner,Name,PropertyType) std::make_shared<reflect::wrap::Property>( \
     reflect::Type::Infer<PropertyType>(),   \
@@ -60,7 +60,7 @@ REFLECT_JOIN(_reflect_define_function_,REFLECT_JOIN(Type,__LINE__))(); \
 static const REFLECT_JOIN(_reflect_define_struct_,REFLECT_JOIN(Type,__LINE__)) REFLECT_JOIN(_reflect_define_,__LINE__);  \
 static void REFLECT_JOIN(_reflect_define_function_,REFLECT_JOIN(Type,__LINE__))()  \
 {   \
-    REFLECT_GENERATE_##Type \
+    __REFLECT_GENERATE_##Type \
 }   
     
 
