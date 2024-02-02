@@ -1,6 +1,6 @@
 build/*
 */build/*
-ThirdParty/*
+**/ThirdParty/*
 shaders/**/compiled/*
 test/reflect
 standalone/reflect

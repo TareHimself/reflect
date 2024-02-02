@@ -41,6 +41,7 @@ namespace reflect::parser
     {
         std::string name;
         std::string result;
+        bool bIsStatic = false;
         std::vector<std::shared_ptr<ParsedFunctionArgument>> arguments{};
 
         ParsedFunction() : ParsedField(Function)
@@ -133,7 +134,7 @@ namespace reflect::parser
     class Parser
     {
     public:
-        std::vector<std::filesystem::path> files;
+        std::vector<std::filesystem::path> files{};
         
         [[nodiscard]] std::shared_ptr<ParsedFile> ParseFile(const std::filesystem::path &path) const;
         [[nodiscard]] std::vector<std::shared_ptr<ParsedFile>> Parse() const;

@@ -1,5 +1,7 @@
 ﻿#include "reflect/Generate.hpp"
 
+#include <iostream>
+
 namespace reflect::generate
 {
     std::string include(const std::string& file)
@@ -31,8 +33,8 @@ namespace reflect::generate
 
     void guardBegin(std::ofstream& stream,const std::string& name)
     {
-        stream << "#ifndef __REFLECT_GENERATED_" << name << std::endl;
-        stream << "#define __REFLECT_GENERATED_" << name << std::endl;
+        stream << "#ifndef _REFLECT_GENERATED_" << name << std::endl;
+        stream << "#define _REFLECT_GENERATED_" << name << std::endl;
     }
 
     void guardEnd(std::ofstream& stream)
@@ -66,7 +68,7 @@ namespace reflect::generate
 
     std::string writeProperty(std::ofstream& stream, const std::string& typeName, const std::shared_ptr<parser::ParsedProperty>& prop)
     {
-        auto macro = "__REFLECTED_GENERATED_" + typeName + "_PROPERTY_" + prop->name;
+        auto macro = "_REFLECTED_GENERATED_" + typeName + "_PROPERTY_" + prop->name;
                     
         stream << "#define " << macro << " REFLECT_WRAP_PROPERTY(" << typeName << "," << prop->name << "," << prop->type << ")" << std::endl;
         stream << std::endl;
@@ -77,7 +79,7 @@ namespace reflect::generate
     std::string writeFunction(std::ofstream& stream, const std::string& typeName,
         const std::shared_ptr<parser::ParsedFunction>& func)
     {
-        auto macro = "__REFLECTED_GENERATED_" + typeName + "_FUNCTION_" + func->name;
+        auto macro = "_REFLECTED_GENERATED_" + typeName + "_FUNCTION_" + func->name;
 
         stream << "#define " << macro << " REFLECT_WRAP_FUNCTION_BEGIN(" << func->name << ")" << " \\" << std::endl;
         stream << "{" << " \\" << std::endl;
@@ -92,7 +94,17 @@ namespace reflect::generate
             i++;
         }
 
-        std::string funcCall = "instance.As<" + typeName + ">()->" + func->name + "(";
+        std::string funcCall;
+        
+        if(func->bIsStatic)
+        {
+            funcCall = typeName + "::" + func->name + "(";
+        }
+        else
+        {
+            funcCall = "instance.As<" + typeName + ">()->" + func->name + "(";
+        }
+        
         for(const auto &argName : argNames)
         {
             funcCall += "*" + argName;
@@ -122,7 +134,7 @@ namespace reflect::generate
 
     void writeBuilder(std::ofstream& stream, const std::string& typeName, const std::vector<std::string>& macros)
     {
-        stream << "#define __REFLECT_GENERATE_" + typeName << " \\" << std::endl;
+        stream << "#define _REFLECT_GENERATE_" + typeName << " \\" << std::endl;
         
         stream << "reflect::factory::ReflectTypeBuilder builder; \\" << std::endl;
         
@@ -139,7 +151,7 @@ namespace reflect::generate
         std::ofstream file(filePath);
 
         if(!file.is_open()) return;
-
+        
         file << "#pragma once" << std::endl;
         file << include("reflect/Macro.hpp") << std::endl;
         file << include("reflect/Reflect.hpp") << std::endl;
@@ -150,6 +162,7 @@ namespace reflect::generate
 
         for (auto &parsed : parsedFile->types)
         {
+            
             switch (parsed->type)
             {
             case parser::Class:
@@ -167,5 +180,6 @@ namespace reflect::generate
         }
 
         file.close();
+        
     }
 }

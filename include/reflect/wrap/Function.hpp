@@ -27,6 +27,9 @@ namespace reflect::wrap
 
         template <typename T, typename... Args>
         void Call(const Value& result, T&& instance, Args&&... args);
+
+        template <typename... Args>
+        void CallStatic(const Value& result, Args&&... args);
     };
 
     template <typename T, typename... Args>
@@ -42,5 +45,11 @@ namespace reflect::wrap
     void Function::Call(const Value& result, T&& instance, Args&&... args)
     {
         Call(result, &instance, std::forward<Args>(args)...);
+    }
+
+    template <typename ... Args>
+    void Function::CallStatic(const Value& result, Args&&... args)
+    {
+        Call(result,nullptr,std::forward<Args>(args)...);
     }
 }

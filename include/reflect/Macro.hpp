@@ -47,7 +47,12 @@ namespace reflect
     
 #define REFLECT_JOIN(A,B) REFLECT_JOIN_IMPL(A,B)
 
-
+#ifdef _MSC_VER
+#define REFLECT_TYPE_NAME __FUNCSIG__
+#else
+#define REFLECT_TYPE_NAME __PRETTY_FUNCTION__
+#endif
+    
 #define REFLECT_IMPLEMENT(Type)  \
 static void REFLECT_JOIN(_reflect_define_function_,REFLECT_JOIN(Type,__LINE__))(); \
 namespace { \
@@ -60,7 +65,7 @@ REFLECT_JOIN(_reflect_define_function_,REFLECT_JOIN(Type,__LINE__))(); \
 static const REFLECT_JOIN(_reflect_define_struct_,REFLECT_JOIN(Type,__LINE__)) REFLECT_JOIN(_reflect_define_,__LINE__);  \
 static void REFLECT_JOIN(_reflect_define_function_,REFLECT_JOIN(Type,__LINE__))()  \
 {   \
-    __REFLECT_GENERATE_##Type \
+    _REFLECT_GENERATE_##Type \
 }   
     
 

@@ -15,6 +15,7 @@ namespace reflect::wrap
         for (auto& field : fields)
         {
             _fields[field->GetName()] = field;
+            _fieldNames.push_back(field->GetName());
         }
     }
 
@@ -28,9 +29,14 @@ namespace reflect::wrap
         return _name;
     }
 
-    std::unordered_map<std::string, std::shared_ptr<Field>> Reflected::GetFields() const
+    std::vector<std::string> Reflected::GetFields() const
     {
-        return _fields;
+        return _fieldNames;
+    }
+
+    std::shared_ptr<Field> Reflected::GetField(const std::string& field)
+    {
+        return _fields[field];
     }
 
     std::shared_ptr<Property> Reflected::GetProperty(const std::string& property)
@@ -51,5 +57,10 @@ namespace reflect::wrap
         }
 
         return std::static_pointer_cast<Function>(_fields[function]);
+    }
+
+    bool Reflected::HasField(const std::string& field) const
+    {
+        return std::ranges::find(_fieldNames,field) != _fieldNames.end();
     }
 }

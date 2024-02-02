@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include <ostream>
 #include <string>
+
+#include "Macro.hpp"
 #include "Utils.hpp"
 
 namespace reflect
@@ -9,11 +11,10 @@ namespace reflect
     {
     private:
         std::string _name{};
-        size_t _size{0};
     public:
 
         Type();
-        Type(const std::string& name,const size_t& size);
+        Type(const std::string& name);
         template <typename T>
         static Type Infer();
 
@@ -21,7 +22,7 @@ namespace reflect
 
         friend std::ostream& operator<<(std::ostream &stream,const Type& other)
         {
-            stream << other._name << " of size " << other._size;
+            stream << other._name;
             
             return stream;
         }
@@ -39,11 +40,11 @@ namespace reflect
     template <typename T>
     Type Type::Infer()
     {
-        std::string name = std::string(typeid(T).name());
-        const auto parts = utils::split(utils::trim(name)," ");
-        name = parts[parts.size() - 1];
-        
-        return {name,sizeof(T)};
+        // std::string name = ;
+        // const auto parts = utils::split(utils::trim(name),">");
+        // name = parts[0];
+        //
+        return {std::string(REFLECT_TYPE_NAME)};
     }
 
     

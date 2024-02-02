@@ -3,14 +3,29 @@
 #include <ostream>
 
 #include "reflect/Generate.hpp"
-#include "reflect/Macro.hpp"
 #include "reflect/Parser.hpp"
 #include "reflect/wrap/Function.hpp"
 #include "reflect/wrap/Property.hpp"
 #include "reflect/wrap/Value.hpp"
 #include "Test.hpp"
+#include "reflect/Factory.hpp"
 using namespace reflect::wrap;
 
+void getAllHeadersInDir(std::vector<std::filesystem::path>& files,const std::filesystem::path& dir,const std::string& headerExt)
+{
+    for (auto & entry : std::filesystem::directory_iterator(dir))
+    {
+        auto ext = entry.path().extension();
+        if(is_directory(entry.path()))
+        {
+            getAllHeadersInDir(files,entry.path(),headerExt);
+        }
+        else if(entry.path().extension() == "." + headerExt && !entry.path().string().ends_with("reflect" + entry.path().extension().string()))
+        {
+            files.push_back(entry.path());
+        }
+    }
+}
 
 void doAdd(Value&& result,Value&& a,Value&& b)
 {
@@ -40,35 +55,66 @@ int main(int argc, char** argv)
     // auto result = 0;
     // testF->Call(&result,instance,1,2,3,4);
 
-    for(const auto reflected : reflect::factory::values())
+    for(const auto& reflected : reflect::factory::values())
     {
         std::cout << "Reflected Type " << reflected->GetName() << std::endl;
-        for(const auto &[_,field] : reflected->GetFields())
+        for(const auto &field : reflected->GetFields())
         {
-            std::cout << "\tField: " << field->GetName() << " \n\t\tType: " << (field->GetType() == EFieldType::FieldType_Function ? "Function" : "Property") << std::endl;
+            std::cout << "\tField: " << field << " \n\t\tType: " << (reflected->GetField(field)->GetType() == EFieldType::FieldType_Function ? "Function" : "Property") << std::endl;
         }
 
         std::cout << "\n\n";
     }
 
-    if(const auto reflected = reflect::factory::find("TestStruct"))
+    
+    if(const auto reflected = reflect::factory::find<TestClass>())
     {
         TestStruct instance;
-        const auto targetProp = reflected->GetProperty("num2");
 
-        std::cout << "Reflected Value " << *targetProp->Get(instance).As<int>() << std::endl;
-        auto v = 1738;
-        targetProp->Set(instance,1738);
-        std::cout << "Reflected Value " << *targetProp->Get(instance).As<int>() << std::endl;
-        const auto targetFunc = reflected->GetFunction("TestFunc2");
-        targetFunc->Call({},instance,std::string("HELLO REFLECTED WORLD"));
+        if(const auto targetProp = reflected->GetProperty("num2"))
+        {
+            std::cout << "Reflected Value " << *targetProp->Get(instance).As<int>() << std::endl;
+            auto v = 1738;
+            targetProp->Set(instance,1738);
+            std::cout << "Reflected Value " << *targetProp->Get(instance).As<int>() << std::endl;
+        }
+        if(const auto targetFunc = reflected->GetFunction("TestFunc2"))
+        {
+            targetFunc->Call({},instance,std::string("HELLO REFLECTED WORLD"));
+        }
     }
-    reflect::parser::Parser parser;
-    parser.files.emplace_back(R"(D:\Github\reflect\test\src\Test.hpp)");
-    const auto parsedFiles = parser.Parse();
-    for (auto& f : parsedFiles)
+
+    if(const auto reflected = reflect::factory::find("TestClass"))
     {
-        reflect::generate::Generate(f,f->filePath.parent_path() / "Test.reflect.hpp");
+        if(const auto targetFunc = reflected->GetFunction("Construct"))
+        {
+            std::shared_ptr<TestClass> classRef;
+            targetFunc->CallStatic(&classRef);
+        }
+    }
+    
+    //std::filesystem::path sourceDir = R"(D:\Github\reflect\test\src)";
+
+    std::filesystem::path sourceDir = R"(D:\Github\reflect\test\src)";
+    sourceDir = sourceDir.lexically_normal();
+    std::filesystem::path outputDir = sourceDir;
+        
+    reflect::parser::Parser parser;
+    getAllHeadersInDir(parser.files,sourceDir,"hpp");
+
+    for (const auto parsedFiles = parser.Parse(); auto& f : parsedFiles)
+    {
+        auto relativeToSourceDir = f->filePath.string().substr(sourceDir.string().size());
+        relativeToSourceDir = relativeToSourceDir.substr(0, relativeToSourceDir.size() - f->filePath.filename().string().size());
+        auto fileName = f->filePath.filename().string();
+        auto extension = f->filePath.extension().string();
+        std::filesystem::path newFilePath  = outputDir.string() + relativeToSourceDir + (fileName.substr(0,fileName.size() - extension.size()) + ".reflect" + extension);
+        if(!exists(newFilePath.parent_path()))
+        {
+            std::filesystem::create_directories(newFilePath.parent_path());
+        }
+            
+        reflect::generate::Generate(f,newFilePath);
     }
     return 0;
 }

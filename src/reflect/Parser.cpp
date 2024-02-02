@@ -102,13 +102,17 @@ namespace reflect::parser
             {
                 if (const auto pos = lineTemp.find("*/"); pos != std::string::npos)
                 {
-                    lineTemp = lineTemp.substr(pos);
+                    lineTemp = lineTemp.substr(pos + 2);
                     _isInComment = false;
+                }
+                else
+                {
+                    result = InternalReadLine(lineTemp);
                 }
             }
             else if (const auto pos = lineTemp.find("/*"); pos != std::string::npos)
             {
-                lineTemp = lineTemp.substr(pos);
+                lineTemp = lineTemp.substr(pos + 2);
                 _isInComment = true;
             }
             else if (const auto pos = lineTemp.find("//"); pos != std::string::npos)
@@ -145,7 +149,14 @@ namespace reflect::parser
         std::string line;
         ReadLine(line);
         line = utils::trim(line);
-
+        const auto staticStr = std::string("static ");
+        
+        result->bIsStatic = line.find(staticStr) != std::string::npos;
+        if(result->bIsStatic)
+        {
+            auto strSize = staticStr.size();
+            line = line.substr(line.find(staticStr) + strSize);
+        }
         const auto splitLine = utils::split(utils::trim(line), " ");
         result->name = utils::split(splitLine.at(1), "(").at(0);
         result->result = splitLine.at(0);
@@ -316,10 +327,12 @@ namespace reflect::parser
 
         for (auto& file : files)
         {
-            if (auto r = ParseFile(file))
+            std::cout << "Parsing " << file << std::endl;
+            if (auto r = ParseFile(file); !r->types.empty())
             {
                 result.push_back(r);
             }
+            std::cout << "Parsed " << file << std::endl;
         }
         return result;
     }

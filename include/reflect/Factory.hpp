@@ -18,17 +18,7 @@ namespace reflect::factory
         return factory;
     }
     
-    inline std::shared_ptr<reflect::wrap::Reflected> find(const Type& type)
-    {
-        const auto factory = _internalGetFactory();
-        
-        if(const auto result = factory->classes.find(type); result != factory->classes.end())
-        {
-            return result->second;
-        }
-
-        return {};
-    }
+    
     
     inline std::vector<std::string> names()
     {
@@ -64,6 +54,18 @@ namespace reflect::factory
         }
         
         return values;
+    }
+
+    inline std::shared_ptr<reflect::wrap::Reflected> find(const Type& type)
+    {
+        const auto factory = _internalGetFactory();
+        
+        if(const auto result = factory->classes.find(type); result != factory->classes.end())
+        {
+            return result->second;
+        }
+
+        return {};
     }
 
     template<typename T>

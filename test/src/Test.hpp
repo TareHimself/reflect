@@ -28,6 +28,13 @@ public:
     {
         std::cout << text << " Count [" << count << "]" << std::endl;
     }
+
+    RFUNCTION()
+
+    static std::shared_ptr<TestClass> Construct()
+    {
+        return std::make_shared<TestClass>();
+    }
 };
 
 REFLECT_IMPLEMENT(TestClass)
@@ -66,7 +73,6 @@ public:
         return a + b + c;
     }
 };
-
 REFLECT_IMPLEMENT(TestStruct)
 
 struct TestClassNotReflected

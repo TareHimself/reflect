@@ -65,23 +65,4 @@ function(BuildThirdPartyDep FOLDER_NAME REPOSITORY VERSION RESULT PRE_BUILD_FN B
   set(${RESULT} ${RESULT_DIR} PARENT_SCOPE)
 endfunction()
 
-# LLVM
-macro(GetLLVM VERSION)
-  set(BUILD_DEST ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/llvm)
-  function(BuildLLVM B_TYPE B_SRC B_DEST)
-    set(BUILD_PROJECTS "clang")
-    execute_process(
-      COMMAND ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=${B_TYPE} -DLLVM_ENABLE_PROJECTS=${BUILD_PROJECTS} -S ${B_SRC}/llvm -B ${B_DEST}
-    )
-  endfunction()
 
-  BuildThirdPartyDep(llvm2 https://github.com/llvm/llvm-project llvmorg-${VERSION} RESULT_DIR "" "BuildLLVM")
-  # list(APPEND CMAKE_PREFIX_PATH ${RESULT_DIR}/lib/cmake)
-  # list(APPEND CMAKE_PREFIX_PATH ${RESULT_DIR}/lib/cmake/glslang)
-  # list(APPEND CMAKE_PREFIX_PATH ${RESULT_DIR}/)
-
-  # find_package(SPIRV-Tools-opt REQUIRED)
-  # find_package(glslang CONFIG REQUIRED)
-  # target_include_directories(${PROJECT_NAME} PUBLIC ${RESULT_DIR}/include) 
-  # target_link_libraries(${PROJECT_NAME} glslang::glslang glslang::SPIRV glslang::glslang-default-resource-limits)
-endmacro()

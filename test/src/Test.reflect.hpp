@@ -5,18 +5,18 @@
 #include "reflect/wrap/Wrap.hpp"
 
 
-#ifndef __REFLECT_GENERATED_TestClass
-#define __REFLECT_GENERATED_TestClass
-#define __REFLECTED_GENERATED_TestClass_PROPERTY_num REFLECT_WRAP_PROPERTY(TestClass,num,int)
+#ifndef _REFLECT_GENERATED_TestClass
+#define _REFLECT_GENERATED_TestClass
+#define _REFLECTED_GENERATED_TestClass_PROPERTY_num REFLECT_WRAP_PROPERTY(TestClass,num,int)
 
-#define __REFLECTED_GENERATED_TestClass_PROPERTY_health REFLECT_WRAP_PROPERTY(TestClass,health,float)
+#define _REFLECTED_GENERATED_TestClass_PROPERTY_health REFLECT_WRAP_PROPERTY(TestClass,health,float)
 
-#define __REFLECTED_GENERATED_TestClass_FUNCTION_HelloWorld REFLECT_WRAP_FUNCTION_BEGIN(HelloWorld) \
+#define _REFLECTED_GENERATED_TestClass_FUNCTION_HelloWorld REFLECT_WRAP_FUNCTION_BEGIN(HelloWorld) \
 { \
  \
 instance.As<TestClass>()->HelloWorld(); \
 })
-#define __REFLECTED_GENERATED_TestClass_FUNCTION_WithArgs REFLECT_WRAP_FUNCTION_BEGIN(WithArgs) \
+#define _REFLECTED_GENERATED_TestClass_FUNCTION_WithArgs REFLECT_WRAP_FUNCTION_BEGIN(WithArgs) \
 { \
 auto arg_0 = args[0].As<std::string>(); \
 auto arg_1 = args[1].As<const uint64_t>(); \
@@ -24,37 +24,45 @@ auto arg_2 = args[2].As<int*>(); \
  \
 instance.As<TestClass>()->WithArgs(*arg_0,*arg_1,*arg_2); \
 })
-#define __REFLECT_GENERATE_TestClass \
+#define _REFLECTED_GENERATED_TestClass_FUNCTION_Construct REFLECT_WRAP_FUNCTION_BEGIN(Construct) \
+{ \
+ \
+if(result){ \
+*result.As<std::shared_ptr<TestClass>>() = TestClass::Construct(); \
+} \
+})
+#define _REFLECT_GENERATE_TestClass \
 reflect::factory::ReflectTypeBuilder builder; \
-builder.AddField(__REFLECTED_GENERATED_TestClass_PROPERTY_num); \
-builder.AddField(__REFLECTED_GENERATED_TestClass_PROPERTY_health); \
-builder.AddField(__REFLECTED_GENERATED_TestClass_FUNCTION_HelloWorld); \
-builder.AddField(__REFLECTED_GENERATED_TestClass_FUNCTION_WithArgs); \
+builder.AddField(_REFLECTED_GENERATED_TestClass_PROPERTY_num); \
+builder.AddField(_REFLECTED_GENERATED_TestClass_PROPERTY_health); \
+builder.AddField(_REFLECTED_GENERATED_TestClass_FUNCTION_HelloWorld); \
+builder.AddField(_REFLECTED_GENERATED_TestClass_FUNCTION_WithArgs); \
+builder.AddField(_REFLECTED_GENERATED_TestClass_FUNCTION_Construct); \
 builder.Create<TestClass>("TestClass");
 #endif
 
 
 
-#ifndef __REFLECT_GENERATED_TestStruct
-#define __REFLECT_GENERATED_TestStruct
-#define __REFLECTED_GENERATED_TestStruct_PROPERTY_num REFLECT_WRAP_PROPERTY(TestStruct,num,int)
+#ifndef _REFLECT_GENERATED_TestStruct
+#define _REFLECT_GENERATED_TestStruct
+#define _REFLECTED_GENERATED_TestStruct_PROPERTY_num REFLECT_WRAP_PROPERTY(TestStruct,num,int)
 
-#define __REFLECTED_GENERATED_TestStruct_PROPERTY_num2 REFLECT_WRAP_PROPERTY(TestStruct,num2,int)
+#define _REFLECTED_GENERATED_TestStruct_PROPERTY_num2 REFLECT_WRAP_PROPERTY(TestStruct,num2,int)
 
-#define __REFLECTED_GENERATED_TestStruct_PROPERTY_num5 REFLECT_WRAP_PROPERTY(TestStruct,num5,int*)
+#define _REFLECTED_GENERATED_TestStruct_PROPERTY_num5 REFLECT_WRAP_PROPERTY(TestStruct,num5,int*)
 
-#define __REFLECTED_GENERATED_TestStruct_FUNCTION_TestFunc REFLECT_WRAP_FUNCTION_BEGIN(TestFunc) \
+#define _REFLECTED_GENERATED_TestStruct_FUNCTION_Foo REFLECT_WRAP_FUNCTION_BEGIN(Foo) \
 { \
  \
-instance.As<TestStruct>()->TestFunc(); \
+instance.As<TestStruct>()->Foo(); \
 })
-#define __REFLECTED_GENERATED_TestStruct_FUNCTION_TestFunc2 REFLECT_WRAP_FUNCTION_BEGIN(TestFunc2) \
+#define _REFLECTED_GENERATED_TestStruct_FUNCTION_TestFunc2 REFLECT_WRAP_FUNCTION_BEGIN(TestFunc2) \
 { \
 auto arg_0 = args[0].As<std::string>(); \
  \
 instance.As<TestStruct>()->TestFunc2(*arg_0); \
 })
-#define __REFLECTED_GENERATED_TestStruct_FUNCTION_TestFunc3 REFLECT_WRAP_FUNCTION_BEGIN(TestFunc3) \
+#define _REFLECTED_GENERATED_TestStruct_FUNCTION_TestFunc3 REFLECT_WRAP_FUNCTION_BEGIN(TestFunc3) \
 { \
 auto arg_0 = args[0].As<int>(); \
 auto arg_1 = args[1].As<int>(); \
@@ -64,14 +72,14 @@ if(result){ \
 *result.As<int>() = instance.As<TestStruct>()->TestFunc3(*arg_0,*arg_1,*arg_2); \
 } \
 })
-#define __REFLECT_GENERATE_TestStruct \
+#define _REFLECT_GENERATE_TestStruct \
 reflect::factory::ReflectTypeBuilder builder; \
-builder.AddField(__REFLECTED_GENERATED_TestStruct_PROPERTY_num); \
-builder.AddField(__REFLECTED_GENERATED_TestStruct_PROPERTY_num2); \
-builder.AddField(__REFLECTED_GENERATED_TestStruct_PROPERTY_num5); \
-builder.AddField(__REFLECTED_GENERATED_TestStruct_FUNCTION_TestFunc); \
-builder.AddField(__REFLECTED_GENERATED_TestStruct_FUNCTION_TestFunc2); \
-builder.AddField(__REFLECTED_GENERATED_TestStruct_FUNCTION_TestFunc3); \
+builder.AddField(_REFLECTED_GENERATED_TestStruct_PROPERTY_num); \
+builder.AddField(_REFLECTED_GENERATED_TestStruct_PROPERTY_num2); \
+builder.AddField(_REFLECTED_GENERATED_TestStruct_PROPERTY_num5); \
+builder.AddField(_REFLECTED_GENERATED_TestStruct_FUNCTION_Foo); \
+builder.AddField(_REFLECTED_GENERATED_TestStruct_FUNCTION_TestFunc2); \
+builder.AddField(_REFLECTED_GENERATED_TestStruct_FUNCTION_TestFunc3); \
 builder.Create<TestStruct>("TestStruct");
 #endif
 
