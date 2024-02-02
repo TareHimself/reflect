@@ -135,9 +135,12 @@ namespace reflect::parser
         ReadLine(line);
         line = utils::trim(line);
 
-        const auto splitLine = utils::split(utils::trim(line), " ");
-        result->name = utils::trim(splitLine.at(1));
-        result->type = utils::trim(splitLine.at(0));
+        std::smatch match;
+        if (std::regex_match(line, match, REFLECT_PROPERTY_REGEX))
+        {
+            result->type = utils::trim(std::string(match[1].str()));
+            result->name = utils::trim(std::string(match[2].str()));
+        }
 
         return result;
     }

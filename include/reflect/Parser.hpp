@@ -12,7 +12,7 @@ namespace reflect::parser
     const std::string REFLECT_FUNCTION_MACRO = "RFUNCTION(";
     const std::string REFLECT_PROPERTY_MACRO = "RPROPERTY(";
     const std::regex REFLECT_ARGUMENT_REGEX{R"((?:const[\s]+?)?([a-zA-Z:0-9_*\s<>]+)(?:[&\s]+)([a-zA-Z0-9_]+))"};
-    
+    const std::regex REFLECT_PROPERTY_REGEX{R"(([a-zA-Z0-9<> :*]+) ([a-zA-Z0-9]+).*)"};
     enum EParsedFieldType
     {
         Property,

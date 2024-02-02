@@ -49,7 +49,7 @@ builder.Create<TestClass>("TestClass");
 
 #define _REFLECTED_GENERATED_TestStruct_PROPERTY_num2 REFLECT_WRAP_PROPERTY(TestStruct,num2,int)
 
-#define _REFLECTED_GENERATED_TestStruct_PROPERTY_num5 REFLECT_WRAP_PROPERTY(TestStruct,num5,int*)
+#define _REFLECTED_GENERATED_TestStruct_PROPERTY_ REFLECT_WRAP_PROPERTY(TestStruct,,)
 
 #define _REFLECTED_GENERATED_TestStruct_FUNCTION_Foo REFLECT_WRAP_FUNCTION_BEGIN(Foo) \
 { \
@@ -76,7 +76,7 @@ if(result){ \
 reflect::factory::ReflectTypeBuilder builder; \
 builder.AddField(_REFLECTED_GENERATED_TestStruct_PROPERTY_num); \
 builder.AddField(_REFLECTED_GENERATED_TestStruct_PROPERTY_num2); \
-builder.AddField(_REFLECTED_GENERATED_TestStruct_PROPERTY_num5); \
+builder.AddField(_REFLECTED_GENERATED_TestStruct_PROPERTY_); \
 builder.AddField(_REFLECTED_GENERATED_TestStruct_FUNCTION_Foo); \
 builder.AddField(_REFLECTED_GENERATED_TestStruct_FUNCTION_TestFunc2); \
 builder.AddField(_REFLECTED_GENERATED_TestStruct_FUNCTION_TestFunc3); \
