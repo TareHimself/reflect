@@ -4,3 +4,4 @@ build/*
 shaders/**/compiled/*
 test/reflect
 standalone/reflect
+**/__pycache__/**
