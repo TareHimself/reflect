@@ -44,7 +44,7 @@ def write_function(file: TextIOWrapper,type_name: str,field: ParsedFunction) -> 
     for arg in field.arguments:
         arg_name = f"arg_{i}"
 
-        write_line(file,f"auto {arg_name} = arg[{i}].As<{arg.type}>(); \\")
+        write_line(file,f"auto {arg_name} = args[{i}].As<{arg.type}>(); \\")
 
         arg_names.append(arg_name)
 

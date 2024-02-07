@@ -74,6 +74,12 @@ namespace reflect::factory
         return find(Type::Infer<T>());
     }
 
+    template<typename T>
+    inline std::shared_ptr<reflect::wrap::Reflected> find(T instance)
+    {
+        return find(Type::Infer<T>());
+    }
+
     inline std::shared_ptr<reflect::wrap::Reflected> find(const std::string& name)
     {
         const auto factory = _internalGetFactory();

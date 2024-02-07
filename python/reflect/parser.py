@@ -1,7 +1,7 @@
 import re
 from io import TextIOWrapper
 from typing import Union
-from reflect.constants import REFLECT_CLASS_MACRO, REFLECT_STRUCT_MACRO, REFLECT_PROPERTY_MACRO,REFLECT_FUNCTION_MACRO, REFLECT_PROPERTY_REGEX, REFLECT_ARGUMENT_REGEX
+from reflect.constants import REFLECT_CLASS_MACRO, REFLECT_STRUCT_MACRO, REFLECT_PROPERTY_MACRO,REFLECT_FUNCTION_MACRO, REFLECT_PROPERTY_REGEX, REFLECT_ARGUMENT_REGEX, REFLECT_FUNCTION_REGEX
 from reflect.types import ParsedFile,ParsedClass, ParsedStruct, ParsedFunction, ParsedProperty, ParsedFunctionArgument
 class FileParser:
     def __init__(self,file_path: str) -> None:
@@ -79,15 +79,16 @@ class FileParser:
 
         result = ParsedFunction()
 
-        result.is_static = static_str in line
+        match_result = re.findall(REFLECT_FUNCTION_REGEX,line)
 
-        if result.is_static:
-            line = line[line.index(static_str) + len(static_str):]
-
-        split_line = line.split(" ")
-
-        result.name = split_line[1].split("()")[0]
-        result.return_type = split_line[0]
+        if len(match_result) < 1 or len(match_result[0]) < 3:
+            return None
+        
+        match_result = match_result[0]
+        
+        result.is_static = not match_result[0].strip() == ""
+        result.return_type = match_result[1]
+        result.name = match_result[2]
 
         args_line = line.split("(")[1]
 

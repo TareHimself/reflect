@@ -567,7 +567,7 @@ class Extractor:
             import_parts.update(col_info.imports)
 
         return [
-            f"# This file was created using extractor.py created by https://github.com/TareHimself\n"
+            f"# This file was created using https://github.com/TareHimself/python-extractor created by https://github.com/TareHimself\n"
         ] + list(import_parts) + [""], file_parts
 
 class SmartFormatter(argparse.HelpFormatter):
