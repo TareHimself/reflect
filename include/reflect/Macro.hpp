@@ -24,10 +24,8 @@ namespace reflect
 // Marks the function below it for reflection
 #define RFUNCTION(...)
 
-// Marks the constructor below it for reflection
+// Marks the constructor below it for reflection not yet parsed
 #define RCONSTRUCTOR(...)
-
-#define REFLECTED_BODY() REFLECT_CONCAT(REFLECTED_,REFLECT_CONCAT(__FILE__,__LINE__))
 
 #define REFLECT_WRAP_PROPERTY(Owner,Name,PropertyType) std::make_shared<reflect::wrap::Property>( \
     reflect::Type::Infer<PropertyType>(),   \
@@ -53,21 +51,24 @@ namespace reflect
 #define REFLECT_TYPE_NAME __PRETTY_FUNCTION__
 #endif
     
-#define REFLECT_IMPLEMENT(Type)  \
-static void REFLECT_JOIN(_reflect_define_function_,REFLECT_JOIN(Type,__LINE__))(); \
+
+#define REFLECT_DECLARE()  \
+static void REFLECT_JOIN(_reflect_define_function_,__LINE__)(); \
 namespace { \
-struct REFLECT_JOIN(_reflect_define_struct_,REFLECT_JOIN(Type,__LINE__)) {  \
-REFLECT_JOIN(_reflect_define_struct_,REFLECT_JOIN(Type,__LINE__))() { \
-REFLECT_JOIN(_reflect_define_function_,REFLECT_JOIN(Type,__LINE__))(); \
+struct REFLECT_JOIN(_reflect_define_struct_,__LINE__) {  \
+REFLECT_JOIN(_reflect_define_struct_,__LINE__)() { \
+REFLECT_JOIN(_reflect_define_function_,__LINE__)(); \
 } \
 };  \
 } \
-static const REFLECT_JOIN(_reflect_define_struct_,REFLECT_JOIN(Type,__LINE__)) REFLECT_JOIN(_reflect_define_,__LINE__);  \
-static void REFLECT_JOIN(_reflect_define_function_,REFLECT_JOIN(Type,__LINE__))()  \
+static const REFLECT_JOIN(_reflect_define_struct_,__LINE__) REFLECT_JOIN(_reflect_define_,__LINE__);  \
+static void REFLECT_JOIN(_reflect_define_function_,__LINE__)()
+
+#define REFLECT_IMPLEMENT(Type)  \
+REFLECT_DECLARE() \
 {   \
     _REFLECT_GENERATE_##Type \
 }   
-    
 
 #endif
 }
