@@ -52,20 +52,20 @@ namespace reflect
 #endif
     
 
-#define REFLECT_DECLARE()  \
-static void REFLECT_JOIN(_reflect_define_function_,__LINE__)(); \
+#define REFLECT_DECLARE(ID)  \
+static void REFLECT_JOIN(_reflect_define_function_,ID)(); \
 namespace { \
-struct REFLECT_JOIN(_reflect_define_struct_,__LINE__) {  \
-REFLECT_JOIN(_reflect_define_struct_,__LINE__)() { \
-REFLECT_JOIN(_reflect_define_function_,__LINE__)(); \
+struct REFLECT_JOIN(_reflect_define_struct_,ID) {  \
+REFLECT_JOIN(_reflect_define_struct_,ID)() { \
+REFLECT_JOIN(_reflect_define_function_,ID)(); \
 } \
 };  \
 } \
-static const REFLECT_JOIN(_reflect_define_struct_,__LINE__) REFLECT_JOIN(_reflect_define_,__LINE__);  \
-static void REFLECT_JOIN(_reflect_define_function_,__LINE__)()
+static const REFLECT_JOIN(_reflect_define_struct_,ID) REFLECT_JOIN(_reflect_define_,ID);  \
+static void REFLECT_JOIN(_reflect_define_function_,ID)()
 
 #define REFLECT_IMPLEMENT(Type)  \
-REFLECT_DECLARE() \
+REFLECT_DECLARE(Type) \
 {   \
     _REFLECT_GENERATE_##Type \
 }   
