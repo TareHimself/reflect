@@ -37,7 +37,7 @@ public:
     }
 };
 
-REFLECT_IMPLEMENT(TestClass)
+//REFLECT_IMPLEMENT(TestClass)
 
 RSTRUCT(VisibleInCaptures)
 struct TestStruct
@@ -73,7 +73,7 @@ public:
         return a + b + c;
     }
 };
-REFLECT_IMPLEMENT(TestStruct)
+//REFLECT_IMPLEMENT(TestStruct)
 
 struct TestClassNotReflected
 {

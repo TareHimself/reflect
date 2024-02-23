@@ -5,8 +5,9 @@ class EParsedFieldType(Enum):
     Function = 1
 
 class ParsedField:
-    def __init__(self,type: EParsedFieldType) -> None:
+    def __init__(self,type: EParsedFieldType,tags: list[str]) -> None:
         self.field_type = type
+        self.tags = tags
 
 class ParsedFunctionArgument:
     def __init__(self) -> None:
@@ -14,16 +15,16 @@ class ParsedFunctionArgument:
         self.name = ""
 
 class ParsedFunction(ParsedField):
-    def __init__(self) -> None:
-        super().__init__(EParsedFieldType.Function)
+    def __init__(self,tags: list[str]) -> None:
+        super().__init__(EParsedFieldType.Function,tags)
         self.name = ""
         self.return_type = ""
         self.is_static = False
         self.arguments: list[ParsedFunctionArgument] = []
 
 class ParsedProperty(ParsedField):
-    def __init__(self) -> None:
-        super().__init__(EParsedFieldType.Property)
+    def __init__(self,tags: list[str]) -> None:
+        super().__init__(EParsedFieldType.Property,tags)
         self.name = ""
         self.type = ""
 
@@ -33,18 +34,19 @@ class EParsedType(Enum):
     Enum = 2
 
 class ParsedType:
-    def __init__(self,type: EParsedType) -> None:
+    def __init__(self,type: EParsedType,tags: list[str]) -> None:
         self.name = ""
         self.type = type
+        self.tags = tags
 
 class ParsedStruct(ParsedType):
-    def __init__(self) -> None:
-        super().__init__(EParsedType.Struct)
+    def __init__(self,tags: list[str]) -> None:
+        super().__init__(EParsedType.Struct,tags)
         self.fields: list[ParsedField] = []
 
 class ParsedClass(ParsedStruct):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self,tags: list[str]) -> None:
+        super().__init__(tags)
         self.type = EParsedType.Class
 
 class ParsedFile:

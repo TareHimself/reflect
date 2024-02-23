@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": "-s D:\\Github\\vengine\\include\\vengine -o D:\\Github\\reflect\\result"
+            "args": "-s D:\\Github\\reflect\\test\\src -o D:\\Github\\reflect\\test\\src"
         }
     ]
 }

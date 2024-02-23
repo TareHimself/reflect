@@ -8,7 +8,7 @@
 
 namespace reflect::wrap
 {
-    struct Reflected
+    struct Reflected : Taggable
     {
     protected:
         std::string _name;
@@ -18,7 +18,7 @@ namespace reflect::wrap
     public:
         Reflected();
 
-        Reflected(const Type& type, const std::string& name, const std::vector<std::shared_ptr<Field>>& fields);
+        Reflected(const Type& type, const std::string& name, const std::vector<std::shared_ptr<Field>>& fields = {},const std::set<std::string>& tags = {});
         [[nodiscard]] Type GetType() const;
         [[nodiscard]] std::string GetName() const;
         [[nodiscard]] std::vector<std::string> GetFields() const;

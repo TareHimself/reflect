@@ -8,7 +8,7 @@
 #include "vengine/widget/Text.hpp"
 using namespace vengine;
 
-RCLASS()
+RCLASS(Category=Game,HideInEditor)
 class TestMesh : public drawing::Mesh {
 public:
   TestMesh();

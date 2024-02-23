@@ -35,25 +35,25 @@ if(result){ \
 })
 
 #define _REFLECT_GENERATE_TestClass \
-reflect::factory::TypeBuilder builder; \
+reflect::factory::ReflectTypeBuilder builder; \
 { \
-  auto field = _REFLECTED_GENERATED_TestClass_PROPERTY_num; \
+  auto field = _REFLECTED_GENERATED_TestClass_PROPERTY_num \
   builder.AddField(field); \
 } \
 { \
-  auto field = _REFLECTED_GENERATED_TestClass_PROPERTY_health; \
+  auto field = _REFLECTED_GENERATED_TestClass_PROPERTY_health \
   builder.AddField(field); \
 } \
 { \
-  auto field = _REFLECTED_GENERATED_TestClass_FUNCTION_HelloWorld; \
+  auto field = _REFLECTED_GENERATED_TestClass_FUNCTION_HelloWorld \
   builder.AddField(field); \
 } \
 { \
-  auto field = _REFLECTED_GENERATED_TestClass_FUNCTION_WithArgs; \
+  auto field = _REFLECTED_GENERATED_TestClass_FUNCTION_WithArgs \
   builder.AddField(field); \
 } \
 { \
-  auto field = _REFLECTED_GENERATED_TestClass_FUNCTION_Construct; \
+  auto field = _REFLECTED_GENERATED_TestClass_FUNCTION_Construct \
   builder.AddField(field); \
 } \
 auto created = builder.Create<TestClass>("TestClass"); \
@@ -94,38 +94,38 @@ if(result){ \
 })
 
 #define _REFLECT_GENERATE_TestStruct \
-reflect::factory::TypeBuilder builder; \
+reflect::factory::ReflectTypeBuilder builder; \
 { \
-  auto field = _REFLECTED_GENERATED_TestStruct_PROPERTY_num; \
-  field->AddTag("TestTag"); \
+  auto field = _REFLECTED_GENERATED_TestStruct_PROPERTY_num \
+  field->AddTag("TestTag") \
   builder.AddField(field); \
 } \
 { \
-  auto field = _REFLECTED_GENERATED_TestStruct_PROPERTY_num2; \
-  field->AddTag("Two"); \
-  field->AddTag("Tags"); \
+  auto field = _REFLECTED_GENERATED_TestStruct_PROPERTY_num2 \
+  field->AddTag("Two") \
+  field->AddTag("Tags") \
   builder.AddField(field); \
 } \
 { \
-  auto field = _REFLECTED_GENERATED_TestStruct_PROPERTY_num5; \
-  field->AddTag("ATagFoMe"); \
-  field->AddTag("AndForYou"); \
+  auto field = _REFLECTED_GENERATED_TestStruct_PROPERTY_num5 \
+  field->AddTag("ATagFoMe") \
+  field->AddTag("AndForYou") \
   builder.AddField(field); \
 } \
 { \
-  auto field = _REFLECTED_GENERATED_TestStruct_FUNCTION_Foo; \
+  auto field = _REFLECTED_GENERATED_TestStruct_FUNCTION_Foo \
   builder.AddField(field); \
 } \
 { \
-  auto field = _REFLECTED_GENERATED_TestStruct_FUNCTION_TestFunc2; \
+  auto field = _REFLECTED_GENERATED_TestStruct_FUNCTION_TestFunc2 \
   builder.AddField(field); \
 } \
 { \
-  auto field = _REFLECTED_GENERATED_TestStruct_FUNCTION_TestFunc3; \
+  auto field = _REFLECTED_GENERATED_TestStruct_FUNCTION_TestFunc3 \
   builder.AddField(field); \
 } \
 auto created = builder.Create<TestStruct>("TestStruct"); \
-created->AddTag("VisibleInCaptures"); \
+created->AddTag("VisibleInCaptures") \
 
 #endif
 

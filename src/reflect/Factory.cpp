@@ -2,7 +2,7 @@
 
 namespace reflect::factory
 {
-    ReflectTypeBuilder& reflect::factory::ReflectTypeBuilder::AddField(
+    TypeBuilder& reflect::factory::TypeBuilder::AddField(
         std::shared_ptr<wrap::Field>&& field)
     {
         fields.push_back(field);

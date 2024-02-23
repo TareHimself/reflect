@@ -1,31 +1,12 @@
 #include <functional>
 #include <iostream>
 #include <ostream>
-
-#include "reflect/Generate.hpp"
-#include "reflect/Parser.hpp"
 #include "reflect/wrap/Function.hpp"
 #include "reflect/wrap/Property.hpp"
 #include "reflect/wrap/Value.hpp"
 #include "Test.hpp"
 #include "reflect/Factory.hpp"
 using namespace reflect::wrap;
-
-void getAllHeadersInDir(std::vector<std::filesystem::path>& files,const std::filesystem::path& dir,const std::string& headerExt)
-{
-    for (auto & entry : std::filesystem::directory_iterator(dir))
-    {
-        auto ext = entry.path().extension();
-        if(is_directory(entry.path()))
-        {
-            getAllHeadersInDir(files,entry.path(),headerExt);
-        }
-        else if(entry.path().extension() == "." + headerExt && !entry.path().string().ends_with("reflect" + entry.path().extension().string()))
-        {
-            files.push_back(entry.path());
-        }
-    }
-}
 
 void doAdd(Value&& result,Value&& a,Value&& b)
 {
@@ -93,28 +74,6 @@ int main(int argc, char** argv)
         }
     }
     
-    //std::filesystem::path sourceDir = R"(D:\Github\reflect\test\src)";
-
-    std::filesystem::path sourceDir = R"(D:\Github\reflect\test\src)";
-    sourceDir = sourceDir.lexically_normal();
-    std::filesystem::path outputDir = sourceDir;
-        
-    reflect::parser::Parser parser;
-    getAllHeadersInDir(parser.files,sourceDir,"hpp");
-
-    for (const auto parsedFiles = parser.Parse(); auto& f : parsedFiles)
-    {
-        auto relativeToSourceDir = f->filePath.string().substr(sourceDir.string().size());
-        relativeToSourceDir = relativeToSourceDir.substr(0, relativeToSourceDir.size() - f->filePath.filename().string().size());
-        auto fileName = f->filePath.filename().string();
-        auto extension = f->filePath.extension().string();
-        std::filesystem::path newFilePath  = outputDir.string() + relativeToSourceDir + (fileName.substr(0,fileName.size() - extension.size()) + ".reflect" + extension);
-        if(!exists(newFilePath.parent_path()))
-        {
-            std::filesystem::create_directories(newFilePath.parent_path());
-        }
-            
-        reflect::generate::Generate(f,newFilePath);
-    }
+    
     return 0;
 }

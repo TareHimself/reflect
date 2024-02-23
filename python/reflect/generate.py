@@ -1,5 +1,5 @@
 from io import TextIOWrapper
-from reflect.types import ParsedClass, ParsedStruct, ParsedField, ParsedProperty, ParsedFunction, ParsedFile, EParsedType, EParsedFieldType
+from reflect.types import ParsedClass, ParsedStruct, ParsedField, ParsedProperty, ParsedFunction, ParsedFile, EParsedType, EParsedFieldType, ParsedType
 
 def write_line(file: TextIOWrapper,line: str) -> None:
     file.write(f"{line}\n")
@@ -22,16 +22,16 @@ class IncludeGuard():
 def include(file: TextIOWrapper,header: str) -> None:
     write_line(file,f"#include \"{header}\"")
 
-def write_property(file: TextIOWrapper,type_name: str,field: ParsedProperty) -> str:
+def write_property(file: TextIOWrapper,type_name: str,field: ParsedProperty) -> tuple[str,list[str]]:
     macro = f"_REFLECTED_GENERATED_{type_name}_PROPERTY_{field.name}"
 
     write_line(file,f"#define {macro} REFLECT_WRAP_PROPERTY({type_name},{field.name},{field.type})")
 
     write_line(file,"")
 
-    return macro
+    return [macro,field.tags]
     
-def write_function(file: TextIOWrapper,type_name: str,field: ParsedFunction) -> str:
+def write_function(file: TextIOWrapper,type_name: str,field: ParsedFunction) -> tuple[str,list[str]]:
     macro = f"_REFLECTED_GENERATED_{type_name}_FUNCTION_{field.name}"
 
     write_line(file,f"#define {macro} REFLECT_WRAP_FUNCTION_BEGIN({field.name}) \\")
@@ -73,16 +73,27 @@ def write_function(file: TextIOWrapper,type_name: str,field: ParsedFunction) -> 
     write_line(file,f"{func_call} \\")
     write_line(file,"})\n")
 
-    return macro
+    return [macro,field.tags]
 
-def write_builder(file: TextIOWrapper,type_name: str,macros: list[str]) -> None:
-    write_line(file,f"#define _REFLECT_GENERATE_{type_name} \\")
-    write_line(file,"reflect::factory::ReflectTypeBuilder builder; \\")
+def write_builder(file: TextIOWrapper,type: ParsedType,macros:  list[tuple[str,list[str]]]) -> None:
+    write_line(file,f"#define _REFLECT_GENERATE_{type.name} \\")
+    write_line(file,"reflect::factory::TypeBuilder builder; \\")
 
-    for macro in macros:
-        write_line(file,f"builder.AddField({macro}); \\")
+    for macro,tags in macros:
+        write_line(file,"{ \\")
+        write_line(file,f"  auto field = {macro}; \\")
+        for tag in  tags:
+            write_line(file,f"  field->AddTag(\"{tag}\"); \\") 
+        write_line(file,f"  builder.AddField(field); \\")
+        write_line(file,"} \\")
 
-    write_line(file,f"builder.Create<{type_name}>(\"{type_name}\");")
+    write_line(file,f"auto created = builder.Create<{type.name}>(\"{type.name}\"); \\")
+
+    for tag in  type.tags:
+        write_line(file,f"created->AddTag(\"{tag}\"); \\") 
+
+    write_line(file,"")
+    
 
 def write_fields(file: TextIOWrapper,type_name: str,fields: list[ParsedField]) -> list[str]:
     macros: list[str] = []
@@ -100,14 +111,14 @@ def write_class(file: TextIOWrapper,item: ParsedClass) -> None:
 
         macros = write_fields(file,item.name,item.fields)
 
-        write_builder(file,item.name,macros)
+        write_builder(file,item,macros)
 
 def write_struct(file: TextIOWrapper,item: ParsedStruct) -> None:
     with IncludeGuard(file,item.name):
         
         macros = write_fields(file,item.name,item.fields)
 
-        write_builder(file,item.name,macros)
+        write_builder(file,item,macros)
 
 def generate(parsed_file: ParsedFile,file_path: str):
     with open(file_path,'w') as f:

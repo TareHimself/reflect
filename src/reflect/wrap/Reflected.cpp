@@ -8,10 +8,12 @@ namespace reflect::wrap
         _name = "";
     }
 
-    Reflected::Reflected(const Type& type, const std::string& name, const std::vector<std::shared_ptr<Field>>& fields)
+    Reflected::Reflected(const Type& type, const std::string& name, const std::vector<std::shared_ptr<Field>>& fields,
+        const std::set<std::string>& tags)
     {
         _type = type;
         _name = name;
+        _tags = tags;
         for (auto& field : fields)
         {
             _fields[field->GetName()] = field;

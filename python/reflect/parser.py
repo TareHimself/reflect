@@ -54,8 +54,13 @@ class FileParser:
             return line
             
 
-    def parse_property(self) -> Union[None,ParsedProperty]:
-        result  = ParsedProperty()
+
+    def parse_tags(self,macro_line:str) -> list[str]:
+        line =  macro_line[macro_line.index('(') + 1:len(macro_line[1:]) - macro_line[::-1].index(')')]
+        return  list(filter(lambda a : len(a) > 0,map(lambda a : a.strip(),line.strip().split(','))))
+
+    def parse_property(self,macro_iine:str) -> Union[None,ParsedProperty]:
+        result  = ParsedProperty(self.parse_tags(macro_iine))
 
         line = self.read()
 
@@ -73,11 +78,11 @@ class FileParser:
 
 
 
-    def parse_function(self) -> Union[None,ParsedFunction]:
+    def parse_function(self,macro_iine:str) -> Union[None,ParsedFunction]:
         line = self.read()
         static_str = "static "
 
-        result = ParsedFunction()
+        result = ParsedFunction(self.parse_tags(macro_iine))
 
         match_result = re.findall(REFLECT_FUNCTION_REGEX,line)
 
@@ -114,7 +119,7 @@ class FileParser:
 
         return result
 
-    def parse_class(self) -> Union[None,ParsedClass]:
+    def parse_class(self,macro_iine:str) -> Union[None,ParsedClass]:
         search_str = "class "
         line = self.read()
 
@@ -129,7 +134,7 @@ class FileParser:
         if len(split_result) == 0:
             return None
         
-        result = ParsedClass()
+        result = ParsedClass(self.parse_tags(macro_iine))
         result.name = split_result[0]
 
         line = self.read()
@@ -139,12 +144,12 @@ class FileParser:
                 return result
             
             if REFLECT_PROPERTY_MACRO in line:
-                r = self.parse_property()
+                r = self.parse_property(line)
 
                 if r is not None:
                     result.fields.append(r)
             elif REFLECT_FUNCTION_MACRO in line:
-                r = self.parse_function()
+                r = self.parse_function(line)
 
                 if r is not None:
                     result.fields.append(r)
@@ -155,7 +160,7 @@ class FileParser:
 
 
 
-    def parse_struct(self) -> Union[None,ParsedStruct]:
+    def parse_struct(self,macro_iine:str) -> Union[None,ParsedStruct]:
         search_str = "struct "
         line = self.read()
 
@@ -170,7 +175,7 @@ class FileParser:
         if len(split_result) == 0:
             return None
         
-        result = ParsedStruct()
+        result = ParsedStruct(self.parse_tags(macro_iine))
         result.name = split_result[0]
 
         line = self.read()
@@ -180,12 +185,12 @@ class FileParser:
                 return result
             
             if REFLECT_PROPERTY_MACRO in line:
-                r = self.parse_property()
+                r = self.parse_property(line)
 
                 if r is not None:
                     result.fields.append(r)
             elif REFLECT_FUNCTION_MACRO in line:
-                r = self.parse_function()
+                r = self.parse_function(line)
 
                 if r is not None:
                     result.fields.append(r)
@@ -204,11 +209,11 @@ class FileParser:
 
             while line is not None:
                 if REFLECT_CLASS_MACRO in line:
-                    r = self.parse_class()
+                    r = self.parse_class(line)
                     if r is not None:
                         result.types.append(r)
                 elif REFLECT_STRUCT_MACRO in line:
-                    r = self.parse_struct()
+                    r = self.parse_struct(line)
                     if r is not None:
                         result.types.append(r)
                 

@@ -99,17 +99,17 @@ namespace reflect::factory
         factory->aliases.emplace(cls->GetName(),cls->GetType());
     }
 
-    struct ReflectTypeBuilder
+    struct TypeBuilder
     {
         std::vector<std::shared_ptr<wrap::Field>> fields;
-        ReflectTypeBuilder& AddField(std::shared_ptr<wrap::Field>&& field);
+        TypeBuilder& AddField(std::shared_ptr<wrap::Field>&& field);
 
         template <typename T>
         std::shared_ptr<wrap::Reflected> Create(const std::string& name);
     };
 
     template <typename T>
-    std::shared_ptr<wrap::Reflected> ReflectTypeBuilder::Create(const std::string& name)
+    std::shared_ptr<wrap::Reflected> TypeBuilder::Create(const std::string& name)
     {
         auto result = std::make_shared<wrap::Reflected>(Type::Infer<T>(),name,fields);
         factory::add(result);
