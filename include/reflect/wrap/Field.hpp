@@ -8,17 +8,17 @@ namespace reflect::wrap
 {
     enum EFieldType
     {
-        FieldType_Unspecified,
-        FieldType_Property,
-        FieldType_Function,
-        FieldType_EnumField,
+        FieldUnspecified,
+        FieldProperty,
+        FieldFunction,
+        FieldEnumMember,
     };
 
     struct Field : Taggable
     {
     protected:
         std::string _name;
-        EFieldType _fieldType = EFieldType::FieldType_Unspecified;
+        EFieldType _fieldType = EFieldType::FieldUnspecified;
     public:
         std::string GetName() const;
         EFieldType GetType() const;

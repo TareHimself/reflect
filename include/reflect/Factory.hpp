@@ -102,7 +102,11 @@ namespace reflect::factory
     struct TypeBuilder
     {
         std::vector<std::shared_ptr<wrap::Field>> fields;
+        
         TypeBuilder& AddField(std::shared_ptr<wrap::Field>&& field);
+
+        template<typename T>
+        TypeBuilder& AddFunction(const std::string& name,T * function);
 
         template <typename T>
         std::shared_ptr<wrap::Reflected> Create(const std::string& name);

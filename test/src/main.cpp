@@ -14,8 +14,19 @@ void doAdd(Value&& result,Value&& a,Value&& b)
     auto bval = b.As<int>();
     *result.As<int>() = *aval + *bval;
 }
+
+struct Test
+{
+    void Foo();
+
+    int Bar(int val);
+};
+
+
 int main(int argc, char** argv)
 {
+
+    auto a = &Test::Bar;
     // TestStruct instance;
     // instance.TestFunc();
     //
@@ -41,7 +52,7 @@ int main(int argc, char** argv)
         std::cout << "Reflected Type " << reflected->GetName() << std::endl;
         for(const auto &field : reflected->GetFields())
         {
-            std::cout << "\tField: " << field << " \n\t\tType: " << (reflected->GetField(field)->GetType() == EFieldType::FieldType_Function ? "Function" : "Property") << std::endl;
+            std::cout << "\tField: " << field << " \n\t\tType: " << (reflected->GetField(field)->GetType() == EFieldType::FieldFunction ? "Function" : "Property") << std::endl;
         }
 
         std::cout << "\n\n";

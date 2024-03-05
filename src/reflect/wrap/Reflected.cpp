@@ -43,7 +43,7 @@ namespace reflect::wrap
 
     std::shared_ptr<Property> Reflected::GetProperty(const std::string& property)
     {
-        if (!_fields.contains(property) || _fields[property]->GetType() != EFieldType::FieldType_Property)
+        if (!_fields.contains(property) || _fields[property]->GetType() != EFieldType::FieldProperty)
         {
             return {};
         }
@@ -53,7 +53,7 @@ namespace reflect::wrap
 
     std::shared_ptr<Function> Reflected::GetFunction(const std::string& function)
     {
-        if (!_fields.contains(function) || _fields[function]->GetType() != EFieldType::FieldType_Function)
+        if (!_fields.contains(function) || _fields[function]->GetType() != EFieldType::FieldFunction)
         {
             return {};
         }
