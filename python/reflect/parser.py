@@ -1,7 +1,8 @@
 import re
+import os
 from io import TextIOWrapper
 from typing import Union
-from reflect.constants import REFLECT_CLASS_MACRO, REFLECT_STRUCT_MACRO, REFLECT_PROPERTY_MACRO,REFLECT_FUNCTION_MACRO, REFLECT_PROPERTY_REGEX, REFLECT_ARGUMENT_REGEX, REFLECT_FUNCTION_REGEX
+from reflect.constants import REFLECT_CLASS_MACRO, REFLECT_STRUCT_MACRO, REFLECT_PROPERTY_MACRO,REFLECT_FUNCTION_MACRO, REFLECT_PROPERTY_REGEX, REFLECT_ARGUMENT_REGEX, REFLECT_FUNCTION_REGEX, REFLECT_BODY_MACRO
 from reflect.types import ParsedFile,ParsedClass, ParsedStruct, ParsedFunction, ParsedProperty, ParsedFunctionArgument
 class FileParser:
     def __init__(self,file_path: str) -> None:
@@ -154,6 +155,9 @@ class FileParser:
                 if r is not None:
                     result.fields.append(r)
 
+            elif REFLECT_BODY_MACRO in line:
+                result.body_line = f"{self.line_number}"
+
             line = self.read()
 
 
@@ -195,6 +199,9 @@ class FileParser:
                 if r is not None:
                     result.fields.append(r)
 
+            elif REFLECT_BODY_MACRO in line:
+                result.body_line = f"{self.line_number}"
+
             line = self.read()
 
     def parse(self) -> Union[None,ParsedFile]:
@@ -229,9 +236,7 @@ class Parser:
         self.files = files
 
     def parse_file(self,file_path: str) -> Union[None,ParsedFile]:
-        parser = FileParser(file_path=file_path)
-
-        return parser.parse()
+        return FileParser(file_path=file_path).parse()
 
     def parse(self) -> list[ParsedFile]:
         results: list[ParsedFile] = []

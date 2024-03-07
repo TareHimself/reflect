@@ -2,11 +2,17 @@
 #include <iostream>
 #include "reflect/Macro.hpp"
 #include "Test.reflect.hpp"
+#include "reflect/IReflected.hpp"
 
 RCLASS()
-class TestClass
+class TestClass : reflect::IReflected
 {
 public:
+
+
+    REFLECTED_BODY()
+
+    
     RPROPERTY()
     int num = 0;
 
@@ -37,12 +43,12 @@ public:
     }
 };
 
-REFLECT_IMPLEMENT(TestClass)
-
 RSTRUCT(VisibleInCaptures)
-struct TestStruct
+struct TestStruct : public reflect::IReflected
 {
 public:
+
+    REFLECTED_BODY()
     
     RPROPERTY(TestTag)
     int num = 0;
@@ -73,7 +79,6 @@ public:
         return a + b + c;
     }
 };
-REFLECT_IMPLEMENT(TestStruct)
 
 struct TestClassNotReflected
 {

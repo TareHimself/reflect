@@ -4,6 +4,11 @@
 #include "reflect/Factory.hpp"
 #include "reflect/wrap/Wrap.hpp"
 
+#ifdef REFLECT_FILE_ID
+#undef REFLECT_FILE_ID
+#endif
+#define REFLECT_FILE_ID e359c886fdcb4fbcb6a03617fc0cb607
+
 
 #ifndef _REFLECT_GENERATED_TestClass
 #define _REFLECT_GENERATED_TestClass
@@ -34,30 +39,9 @@ if(result){ \
 } \
 })
 
-#define _REFLECT_GENERATE_TestClass \
-reflect::factory::TypeBuilder builder; \
-{ \
-  auto field = _REFLECTED_GENERATED_TestClass_PROPERTY_num; \
-  builder.AddField(field); \
-} \
-{ \
-  auto field = _REFLECTED_GENERATED_TestClass_PROPERTY_health; \
-  builder.AddField(field); \
-} \
-{ \
-  auto field = _REFLECTED_GENERATED_TestClass_FUNCTION_HelloWorld; \
-  builder.AddField(field); \
-} \
-{ \
-  auto field = _REFLECTED_GENERATED_TestClass_FUNCTION_WithArgs; \
-  builder.AddField(field); \
-} \
-{ \
-  auto field = _REFLECTED_GENERATED_TestClass_FUNCTION_Construct; \
-  builder.AddField(field); \
-} \
-auto created = builder.Create<TestClass>("TestClass"); \
-
+#define _reflected_e359c886fdcb4fbcb6a03617fc0cb607_13() \
+static std::shared_ptr<reflect::wrap::Reflected> Reflected; \
+std::shared_ptr<reflect::wrap::Reflected> GetReflected() const override;
 #endif
 
 
@@ -93,40 +77,9 @@ if(result){ \
 } \
 })
 
-#define _REFLECT_GENERATE_TestStruct \
-reflect::factory::TypeBuilder builder; \
-{ \
-  auto field = _REFLECTED_GENERATED_TestStruct_PROPERTY_num; \
-  field->AddTag("TestTag"); \
-  builder.AddField(field); \
-} \
-{ \
-  auto field = _REFLECTED_GENERATED_TestStruct_PROPERTY_num2; \
-  field->AddTag("Two"); \
-  field->AddTag("Tags"); \
-  builder.AddField(field); \
-} \
-{ \
-  auto field = _REFLECTED_GENERATED_TestStruct_PROPERTY_num5; \
-  field->AddTag("ATagFoMe"); \
-  field->AddTag("AndForYou"); \
-  builder.AddField(field); \
-} \
-{ \
-  auto field = _REFLECTED_GENERATED_TestStruct_FUNCTION_Foo; \
-  builder.AddField(field); \
-} \
-{ \
-  auto field = _REFLECTED_GENERATED_TestStruct_FUNCTION_TestFunc2; \
-  builder.AddField(field); \
-} \
-{ \
-  auto field = _REFLECTED_GENERATED_TestStruct_FUNCTION_TestFunc3; \
-  builder.AddField(field); \
-} \
-auto created = builder.Create<TestStruct>("TestStruct"); \
-created->AddTag("VisibleInCaptures"); \
-
+#define _reflected_e359c886fdcb4fbcb6a03617fc0cb607_51() \
+static std::shared_ptr<reflect::wrap::Reflected> Reflected; \
+std::shared_ptr<reflect::wrap::Reflected> GetReflected() const override;
 #endif
 
 

@@ -19,7 +19,10 @@ struct Test
 {
     void Foo();
 
-    int Bar(int val);
+    int Bar(int val)
+    {
+        return val;
+    }
 };
 
 
@@ -61,7 +64,14 @@ int main(int argc, char** argv)
     
     if(const auto reflected = reflect::factory::find<TestClass>())
     {
-        TestStruct instance;
+        TestClass instance;
+
+        auto t1 = reflect::factory::find<TestClass>() == TestClass::reflected;
+        auto t2 = reflect::factory::find<TestClass>() == instance.reflected;
+        if(t1 && t2)
+        {
+            std::cout << "Static member matches" << std::endl;
+        }
 
         if(const auto targetProp = reflected->GetProperty("num2"))
         {

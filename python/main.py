@@ -69,12 +69,12 @@ def main():
     parsed_files = p.parse()
 
     for parsed_file in parsed_files:
-        new_relative_path = parsed_file.file_path[len(source_dir) + 1:-(len(filter_ext))] + f"reflect.{filter_ext}"
+        new_relative_path = parsed_file.file_path[len(source_dir) + 1:-(len(filter_ext))] + f"reflect."
         out_file_path = os.path.join(output_dir,new_relative_path)
         dir_name = os.path.dirname(out_file_path)
         if not os.path.exists(dir_name):
             os.makedirs(dir_name)
-        generate(parsed_file,out_file_path)
+        generate(parsed_file,out_file_path,filter_ext)
 
 if __name__ == "__main__":
     main()

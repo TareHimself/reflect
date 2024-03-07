@@ -38,6 +38,7 @@ class ParsedType:
         self.name = ""
         self.type = type
         self.tags = tags
+        self.body_line = ""
 
 class ParsedStruct(ParsedType):
     def __init__(self,tags: list[str]) -> None:

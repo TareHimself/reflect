@@ -71,4 +71,6 @@ REFLECT_DECLARE(Type) \
 }   
 
 #endif
+
+#define REFLECTED_BODY() REFLECT_JOIN(_reflected_,REFLECT_JOIN(REFLECT_FILE_ID,REFLECT_JOIN(_,__LINE__)))()
 }

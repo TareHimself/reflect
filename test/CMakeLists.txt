@@ -19,6 +19,7 @@ add_subdirectory(../ reflect)
 add_executable(main src/main.cpp ${SOURCE_FILES} ${INCLUDE_FILES})
 target_link_libraries(main reflect)
 target_link_libraries(${PROJECT_NAME} reflect)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/src)
 target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/../)
 add_custom_command ( TARGET main POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy#_if_different
