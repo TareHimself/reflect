@@ -1,0 +1,21 @@
+{
+    "includes": [
+        "meta/Metadata.hpp",
+        "meta/Macro.hpp",
+        "meta/Factory.hpp"
+    ],
+    "struct_tag" : "RSTRUCT",
+    "enum_tag" : "RENUM",
+    "property_tag" : "RPROPERTY",
+    "function_tag" : "RFUNCTION",
+    "body_tag" : "REFLECTED_BODY",
+    "constructor_tag" : "RCONSTRUCTOR",
+    "function_create" : "REFLECT_CREATE_FUNCTION",
+    "property_create" : "REFLECT_CREATE_PROPERTY",
+    "header_extension" : "hpp",
+    "source_extension" : "cpp",
+    "namespace": "meta",
+    "smart_pointer": "std::shared_ptr",
+    "smart_pointer_allocator": "std::make_shared",
+    "vector" : "std::vector"
+}

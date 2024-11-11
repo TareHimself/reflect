@@ -10,7 +10,13 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": "-s D:\\Github\\reflect\\test\\src -o D:\\Github\\reflect\\test\\src"
+            "args": [
+                "-s",
+                "D:\\Github\\reflect\\test\\src",
+                "-o",
+                "D:\\Github\\reflect\\test\\src",
+                "-w"
+            ]
         }
     ]
 }

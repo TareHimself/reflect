@@ -1,30 +1,41 @@
 #pragma once
-#include <iostream>
-#include "reflect/Macro.hpp"
-#include "Test.reflect.hpp"
-#include "reflect/IReflected.hpp"
+#include "meta/Macro.hpp"
+#include "meta/IMetadata.hpp"
+#include "Test.meta.hpp"
 
-RCLASS()
-class TestClass : reflect::IReflected
+namespace a::b::c {
+    namespace f {
+    
+    }
+
+    namespace g::h::i {
+    
+    }
+}
+
+RSTRUCT()
+class TestClass : meta::IMetadata
 {
 public:
 
 
     REFLECTED_BODY()
 
-    
-    RPROPERTY()
-    int num = 0;
 
+    RPROPERTY(IGNORE)
+    int num{};
+
+#ifdef SWOOO
     RPROPERTY()
     float health = 200.0f;
 
     RFUNCTION()
-
     void HelloWorld()
     {
         std::cout << "THIS WAS REFLECTED" << std::endl;
     }
+
+#endif
 
     RFUNCTION()
 
@@ -44,7 +55,7 @@ public:
 };
 
 RSTRUCT(VisibleInCaptures)
-struct TestStruct : public reflect::IReflected
+struct TestStruct : public meta::IMetadata
 {
 public:
 
@@ -74,8 +85,9 @@ public:
 
     RFUNCTION()
 
-    int TestFunc3(int a, int b, int c)
+    int TestFunc3(int &a, int b, int c)
     {
+        a = 200;
         return a + b + c;
     }
 };
